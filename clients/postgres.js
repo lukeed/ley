@@ -1,3 +1,4 @@
+const { MigrationError } = require('../lib/util');
 const TEXT = require('../lib/text');
 
 exports.connect = function () {
@@ -16,7 +17,11 @@ exports.loop = function (client, files, method) {
 	return client.begin(async sql => {
 		for (const obj of files) {
 			const file = require(obj.abs);
-			if (typeof file[method] === 'function') await file[method](sql);
+			if (typeof file[method] === 'function') {
+				await file[method](sql).catch(err => {
+					throw new MigrationError(err, obj);
+				});
+			}
 			if (method === 'up') {
 				await sql`insert into migrations (name,created_at) values (${obj.name},now());`
 			} else if (method === 'down') {

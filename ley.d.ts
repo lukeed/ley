@@ -1,17 +1,21 @@
-export namespace Options {
-	export interface Base {
+declare namespace Options {
+	declare interface Base {
 		cwd?: string;
 		client?: string;
 		dir?: string;
 	}
 
-	export interface Up extends Base {
+	declare interface Up extends Base {
 		single?: boolean;
 	}
 
-	export interface Down extends Base {
+	declare interface Down extends Base {
 		all?: boolean;
 	}
+}
+
+declare class MigrationError extends Error {
+	readonly migration: Record<'name'|'abs', string>;
 }
 
 export function up(opts?: Options.Up): Promise<void>;

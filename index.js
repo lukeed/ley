@@ -1,35 +1,34 @@
-const { join } = require('path');
-const { glob, diff } = require('./lib/utils');
+const { join, resolve } = require('path');
+const $ = require('./lib/util');
+
+async function parse(opts) {
+	const cwd = resolve(opts.cwd || '.');
+	const dir = join(cwd, opts.dir);
+
+	const migrations = await $.glob(dir);
+	const lib = opts.client || await $.detect(cwd);
+	if (!lib) throw new Error('Could not find DB driver'); // better msg
+
+	const file = join(__dirname, 'clients', lib);
+	const driver = require(file); // allow throw
+
+	return { driver, migrations };
+}
 
 exports.up = async function (opts={}) {
-	const migrations = await glob(opts.dir, opts.cwd);
-
-	// TODO
-	// const client = opts.client || await detect(cwd);
-	// if (!client) return console.error('Could not find DB driver'); // TODO
-	const file = join(__dirname, 'clients', 'postgres');
-	const driver = require(file);
-
-	let client;
+	let client, { driver, migrations } = await parse(opts);
 
 	try {
 		// Open new conn; setup table
 		client = await driver.connect();
 		const exists = await driver.setup(client);
 
-		// console.log('\n\n~> exists', exists);
-		// console.log('\n\n~> migrations', migrations);
-
-		const fresh = diff(exists, migrations);
+		const fresh = $.diff(exists, migrations);
 		const toRun = opts.single ? [fresh[0]] : fresh;
 
-		// console.log('~> to run', toRun);
-
 		await driver.loop(client, toRun, 'up');
-		console.log('DONE');
 	} catch (err) {
-		// todo: pretty print
-		console.error('SOMETHING HAPPENED', err);
+		throw err;
 	} finally {
 		if (client) await driver.end(client);
 	}

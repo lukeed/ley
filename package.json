@@ -1,0 +1,31 @@
+{
+  "name": "ley",
+  "version": "0.0.0",
+  "repository": "lukeed/ley",
+  "description": "WIP",
+  "types": "ley.d.ts",
+  "license": "MIT",
+  "bin": {
+    "ley": "bin.js"
+  },
+  "author": {
+    "name": "Luke Edwards",
+    "email": "luke.edwards05@gmail.com",
+    "url": "https://lukeed.com"
+  },
+  "files": [
+    "*.d.ts",
+    "*.js",
+    "lib"
+  ],
+  "engines": {
+    "node": ">= 8"
+  },
+  "scripts": {
+    "test": "tape -r esm test/*.js | tap-spec"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

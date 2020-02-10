@@ -22,12 +22,14 @@
     "node": ">= 8"
   },
   "scripts": {
-    "test": "tape -r esm test/*.js | tap-spec"
+    "test": "tape test/*.js | tap-spec"
   },
   "dependencies": {
     "sade": "^1.7.0",
     "totalist": "^1.0.1"
   },
   "devDependencies": {
+    "tap-spec": "5.0.0",
+    "tape": "4.13.0"
   }
 }

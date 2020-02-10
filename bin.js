@@ -13,15 +13,14 @@ sade('ley')
 	.version(pkg.version)
 	.option('-c, --cwd', 'The current directory to resolve from', '.')
 	.option('-d, --dir', 'The directory of migration files to run', 'migrations')
-	.option('-D, --dry-run', 'TODO explanation, shows what will be done')
 
 	.command('up')
-		.describe('Run "up" migrations')
+		.describe('Run "up" migration(s). Applies all outstanding items.')
 		.option('-s, --single', 'Only run a single migraton')
 		.action(wrap('up'))
 
 	.command('down')
-		.describe('Run "down" migrations')
+		.describe('Run "down" migration(s). Defaults to one at a time.')
 		.option('-a, --all', 'Run all "down" migrations')
 		.action(wrap('down'))
 

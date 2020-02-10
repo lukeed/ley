@@ -25,6 +25,8 @@
     "test": "tape -r esm test/*.js | tap-spec"
   },
   "dependencies": {
+    "sade": "^1.7.0",
+    "totalist": "^1.0.1"
   },
   "devDependencies": {
   }

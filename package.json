@@ -25,6 +25,7 @@
     "test": "tape test/*.js | tap-spec"
   },
   "dependencies": {
+    "kleur": "^3.0.3",
     "sade": "^1.7.0",
     "totalist": "^1.0.1"
   },

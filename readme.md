@@ -2,23 +2,33 @@
 
 > Driver agnostic database migrations
 
-> **WIP:** What's here is the end of Night #1<br>Incoming: logo, more docs, more drivers, full test coverage.<br>
+## TODO
+
+> **WIP:** What's here is the end of Night #1
+
+- [ ] driver support:
+  - [x] [`pg`](https://www.npmjs.com/package/pg)
+  - [x] [`postgres`](https://www.npmjs.com/package/postgres)
+  - [ ] [`mysql`]()
+  - [ ] [`mysql2`]()
+- [ ] complete test coverage
+- [ ] complete documentation
 
 ## Features
 
-* Agnostic<br>
+* **Agnostic**<br>
   _Supports [`postgres`](https://www.npmjs.com/package/postgres), [`pg`](https://www.npmjs.com/package/pg), [`mysql`](https://www.npmjs.com/package/mysql), and [`mysql2`](https://www.npmjs.com/package/mysql2)._
 
-* Lightweight<br>
+* **Lightweight**<br>
   _Does **not** include any driver dependencies._
 
-* Transactional<br>
+* **Transactional**<br>
   _Runs all migration files within a transaction for rollback safety._
 
-* Familiar<br>
+* **Familiar**<br>
   _Does **not** invent new syntax or abstractions.<br>You're always working directly with your driver of choice._
 
-* Flexible<br>
+* **Flexible**<br>
   _Find the CLI to restrictive? You may require `ley` for your own scripting!_
 
 

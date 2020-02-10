@@ -2,7 +2,7 @@
   "name": "ley",
   "version": "0.0.0",
   "repository": "lukeed/ley",
-  "description": "WIP",
+  "description": "Driver-agnostic database migrations",
   "types": "ley.d.ts",
   "license": "MIT",
   "bin": {

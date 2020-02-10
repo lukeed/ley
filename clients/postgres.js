@@ -1,9 +1,8 @@
 const TEXT = require('../lib/text');
-const noop = () => {};
 
 exports.connect = function () {
 	return require('postgres')({
-		onnotice: noop,
+		onnotice: () => {},
 		max: 1,
 	});
 }

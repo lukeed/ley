@@ -35,5 +35,26 @@ exports.up = async function (opts={}) {
 }
 
 exports.down = async function (opts={}) {
-	//
+	let client, { driver, migrations } = await parse(opts);
+
+	try {
+		// Open new conn; setup table
+		client = await driver.connect();
+		const exists = await driver.setup(client);
+		if (!exists.length) return; // nothing to undo
+
+		exists.reverse();
+		migrations.reverse();
+
+		const last = exists[0];
+		const idx = migrations.findIndex(x => x.name === last.name);
+		if (idx === -1) throw new Error(`Unknown "${last.name}" migration`);
+
+		const toRun = $.pluck(opts.all ? exists : [last], migrations.slice(idx));
+		await driver.loop(client, toRun, 'down');
+	} catch (err) {
+		throw err;
+	} finally {
+		if (client) await driver.end(client);
+	}
 }

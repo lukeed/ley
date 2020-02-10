@@ -1,5 +1,5 @@
 const test = require('tape');
-const ley = require('../ley');
+const ley = require('..');
 
 test('exports', t => {
 	t.is(typeof ley, 'object');

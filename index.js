@@ -7,7 +7,7 @@ async function parse(opts) {
 
 	const migrations = await $.glob(dir);
 	const lib = opts.client || await $.detect(cwd);
-	if (!lib) throw new Error('Could not find DB driver'); // better msg
+	if (!lib) throw new Error('Unable to locate SQL driver');
 
 	const file = join(__dirname, 'clients', lib);
 	const driver = require(file); // allow throw
@@ -24,9 +24,11 @@ exports.up = async function (opts={}) {
 		const exists = await driver.setup(client);
 
 		const fresh = $.diff(exists, migrations);
-		const toRun = opts.single ? [fresh[0]] : fresh;
+		if (!fresh.length) return []; // nothing to run
 
+		const toRun = opts.single ? [fresh[0]] : fresh;
 		await driver.loop(client, toRun, 'up');
+		return toRun.map(x => x.name);
 	} catch (err) {
 		throw err;
 	} finally {
@@ -41,7 +43,7 @@ exports.down = async function (opts={}) {
 		// Open new conn; setup table
 		client = await driver.connect();
 		const exists = await driver.setup(client);
-		if (!exists.length) return; // nothing to undo
+		if (!exists.length) return []; // nothing to undo
 
 		exists.reverse();
 		migrations.reverse();
@@ -52,6 +54,7 @@ exports.down = async function (opts={}) {
 
 		const toRun = $.pluck(opts.all ? exists : [last], migrations.slice(idx));
 		await driver.loop(client, toRun, 'down');
+		return toRun.map(x => x.name);
 	} catch (err) {
 		throw err;
 	} finally {

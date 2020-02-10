@@ -1,7 +1,13 @@
 #!/usr/bin/env node
 const sade = require('sade');
 const pkg = require('./package');
+const $ = require('./lib/log');
 const ley = require('.');
+
+function wrap(act) {
+	const done = $.done.bind($, act);
+	return xx => ley[act](xx).then(done).catch($.bail);
+}
 
 sade('ley')
 	.version(pkg.version)
@@ -12,12 +18,11 @@ sade('ley')
 	.command('up')
 		.describe('Run "up" migrations')
 		.option('-s, --single', 'Only run a single migraton')
-		.action(ley.up)
+		.action(wrap('up'))
 
 	.command('down')
 		.describe('Run "down" migrations')
 		.option('-a, --all', 'Run all "down" migrations')
-		.option('-f, --force', 'Skip confirmation prompt')
-		.action(ley.down)
+		.action(wrap('down'))
 
 	.parse(process.argv);

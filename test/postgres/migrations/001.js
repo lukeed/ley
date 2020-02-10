@@ -1,4 +1,4 @@
-exports.up = async DB => {
+exports.up = async sql => {
 	console.log('hello from inside :: 001 @ up');
 
 	const items = [{
@@ -15,7 +15,7 @@ exports.up = async DB => {
 		completed: false,
 	}];
 
-	await DB`
+	await sql`
 		create table if not exists todos (
 			id serial primary key,
 			name varchar(255) NOT NULL,
@@ -24,14 +24,14 @@ exports.up = async DB => {
 		);
 	`;
 
-	await DB`
+	await sql`
 		insert into todos ${
-			DB(items, 'name', 'completed')
+			sql(items, 'name', 'completed')
 		}
 	`;
 }
 
-exports.down = async DB => {
+exports.down = async sql => {
 	console.log('hello from inside :: 001 @ down');
-	await DB`drop table if exists todos`;
+	await sql`drop table if exists todos`;
 }

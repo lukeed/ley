@@ -1,8 +1,8 @@
-exports.up = async DB => {
+exports.up = async sql => {
 	console.log('hello from inside :: 004 @ up');
-	// await DB`select foo`;
+	// await sql`select foo`;
 }
 
-exports.down = async DB => {
+exports.down = async sql => {
 	console.log('hello from inside :: 004 @ down');
 }

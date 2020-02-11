@@ -13,6 +13,7 @@ sade('ley')
 	.version(pkg.version)
 	.option('-c, --cwd', 'The current directory to resolve from', '.')
 	.option('-d, --dir', 'The directory of migration files to run', 'migrations')
+	.option('-r, --require', 'Additional module(s) to preload')
 
 	.command('up')
 		.describe('Run "up" migration(s). Applies all outstanding items.')

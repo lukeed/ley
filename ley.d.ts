@@ -2,6 +2,7 @@ declare namespace Options {
 	declare interface Base {
 		cwd?: string;
 		client?: string;
+		require?: string | string[];
 		dir?: string;
 	}
 

@@ -5,6 +5,12 @@ async function parse(opts) {
 	const cwd = resolve(opts.cwd || '.');
 	const dir = join(cwd, opts.dir);
 
+	[].concat(opts.require || []).filter(Boolean).forEach(name => {
+		const tmp = $.exists(name, [cwd]);
+		if (!tmp) throw new Error(`Cannot find module '${name}'`);
+		return require(tmp);
+	});
+
 	const migrations = await $.glob(dir);
 	const lib = opts.client || await $.detect(cwd);
 	if (!lib) throw new Error('Unable to locate a SQL driver');

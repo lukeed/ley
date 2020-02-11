@@ -6,7 +6,7 @@ async function parse(opts) {
 	const dir = join(cwd, opts.dir);
 
 	[].concat(opts.require || []).filter(Boolean).forEach(name => {
-		const tmp = $.exists(name, [cwd]);
+		const tmp = $.exists(name, cwd);
 		if (!tmp) throw new Error(`Cannot find module '${name}'`);
 		return require(tmp);
 	});

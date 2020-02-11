@@ -1,6 +1,20 @@
-# ley
+<div align="center">
+  <img src="shots/logo.png" alt="ley" height="200" />
+</div>
 
-> Driver agnostic database migrations
+<div align="center">
+  <a href="https://npmjs.org/package/ley">
+    <img src="https://badgen.net/npm/v/ley" alt="version" />
+  </a>
+  <a href="https://github.com/lukeed/ley/actions">
+    <img src="https://badgen.net/github/status/lukeed/ley" alt="status" />
+  </a>
+  <a href="https://npmjs.org/package/ley">
+    <img src="https://badgen.net/npm/dm/ley" alt="downloads" />
+  </a>
+</div>
+
+<div align="center">Driver agnostic database migrations</div>
 
 ## TODO
 
@@ -19,7 +33,7 @@
 ## Features
 
 * **Agnostic**<br>
-  _Supports [`postgres`](https://www.npmjs.com/package/postgres), [`pg`](https://www.npmjs.com/package/pg), [`mysql`](https://www.npmjs.com/package/mysql), and [`mysql2`](https://www.npmjs.com/package/mysql2)._
+  _Supports [`postgres`](https://www.npmjs.com/package/postgres), [`pg`](https://www.npmjs.com/package/pg), [`better-sqlite3`](https://www.npmjs.com/package/better-sqlite3), [`sqlite`](https://www.npmjs.com/package/sqlite), [`mysql`](https://www.npmjs.com/package/mysql), and [`mysql2`](https://www.npmjs.com/package/mysql2)_
 
 * **Lightweight**<br>
   _Does **not** include any driver dependencies._

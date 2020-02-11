@@ -11,6 +11,8 @@
   - [x] [`postgres`](https://www.npmjs.com/package/postgres)
   - [ ] [`mysql`]()
   - [ ] [`mysql2`]()
+  - [x] [`better-sqlite3`](https://www.npmjs.com/package/better-sqlite3)
+  - [ ] [`sqlite`](https://www.npmjs.com/package/sqlite)
 - [ ] complete test coverage
 - [ ] complete documentation
 

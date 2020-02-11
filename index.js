@@ -7,7 +7,7 @@ async function parse(opts) {
 
 	const migrations = await $.glob(dir);
 	const lib = opts.client || await $.detect(cwd);
-	if (!lib) throw new Error('Unable to locate SQL driver');
+	if (!lib) throw new Error('Unable to locate a SQL driver');
 
 	const file = join(__dirname, 'lib', 'clients', lib);
 	const driver = require(file); // allow throw here

@@ -11,12 +11,13 @@ async function parse(opts) {
 		return require(tmp);
 	});
 
-	const migrations = await $.glob(dir);
-	const lib = opts.client || await $.detect();
+	const lib = opts.client || $.detect();
 	if (!lib) throw new Error('Unable to locate a SQL driver');
 
 	const file = join(__dirname, 'lib', 'clients', lib);
 	const driver = require(file); // allow throw here
+
+	const migrations = await $.glob(dir);
 
 	return { driver, migrations };
 }

@@ -185,6 +185,36 @@ test('(utils) detect', t => {
 });
 
 
+test('(utils) local :: success', t => {
+	const output = $.local('index.js'); // root/index.js
+	t.is(typeof output, 'object', '~> returns _something_ if exists');
+	t.true(!!output.down, '~> had "down" export');
+	t.true(!!output.up, '~> had "up" export');
+	t.end();
+});
+
+
+test('(utils) local :: success w/ cwd', t => {
+	const output = $.local('util.js', __dirname); // this file
+	t.is(typeof output, 'object', '~> returns _something_ if exists');
+	t.end();
+});
+
+
+test('(utils) local :: failure', t => {
+	const output = $.local('foobar.ts'); // root dir
+	t.is(output, false, '~> returns `false` if not found');
+	t.end();
+});
+
+
+test('(utils) local :: failure w/ cwd', t => {
+	const output = $.local('index.js', dir); // => pg/migrations/index.js
+	t.is(output, false, '~> returns `false` if not found');
+	t.end();
+});
+
+
 test('(utils) MigrationError', t => {
 	const original = new Error('hello world');
 	const migration = { name: '000.js', abs: 'path/to/000.js' };

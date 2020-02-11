@@ -27,7 +27,7 @@ exports.up = async function (opts={}) {
 
 	try {
 		// Open new conn; setup table
-		client = await driver.connect();
+		client = await driver.connect(opts.config);
 		const exists = await driver.setup(client);
 
 		const fresh = $.diff(exists, migrations);

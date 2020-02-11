@@ -1,8 +1,12 @@
 declare namespace Options {
+	declare type Config = Record<string, unknown>;
+	declare type Resolver = () => Config;
+
 	declare interface Base {
 		cwd?: string;
 		client?: string;
 		require?: string | string[];
+		config?: Config | Resolver;
 		dir?: string;
 	}
 

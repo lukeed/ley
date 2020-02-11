@@ -159,6 +159,16 @@ When unspecified, `ley` searches for all supported client drivers in this order:
 ['postgres', 'pg']; // TODO: more
 ```
 
+#### opts.config
+Type: `object`<br>
+Default: `undefined`
+
+A configuration object for your client driver to establish a connection.<br>
+When unspecified, `ley` assumes that your client driver is able to connect through `process.env` variables.
+
+>**Note:** The `ley` CLI will search for a `ley.config.js` config file (configurable).<br>
+If found, this file may contain an object or a function that resolves to your config object.
+
 #### opts.single
 Type: `boolean`<br>
 Default: `false`

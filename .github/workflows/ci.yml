@@ -28,7 +28,7 @@ jobs:
       run: nyc npm test
 
     - name: Report
-      if: matrix.nodejs >= 12
+      if: matrix.nodejs >= 12 && matrix.os == 'macOS-latest'
       run: |
         nyc report --reporter=text-lcov > coverage.lcov
         bash <(curl -s https://codecov.io/bash)

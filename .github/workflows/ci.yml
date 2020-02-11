@@ -25,7 +25,7 @@ jobs:
         npm install -g nyc
 
     - name: Test w/ Coverage
-      run: nyc --include=src npm test
+      run: nyc npm test
 
     - name: Report
       if: matrix.nodejs >= 12

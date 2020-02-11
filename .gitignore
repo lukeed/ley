@@ -3,4 +3,5 @@ node_modules
 *.lock
 *.log
 
+/.nyc-output
 /.env

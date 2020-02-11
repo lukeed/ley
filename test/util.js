@@ -174,7 +174,7 @@ test('(utils) detect', t => {
 
 	const foo = $.detect();
 	t.is(foo, undefined, 'returns undefined (failure)');
-	t.same(seen, ['postgres', 'pg'], '~> looks for drivers (ordered)');
+	t.same(seen, ['postgres', 'pg', 'better-sqlite3'], '~> looks for drivers (ordered)');
 
 	$.exists = x => x === 'pg';
 	const bar = $.detect();

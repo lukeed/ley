@@ -24,7 +24,7 @@
   - [x] [`pg`](https://www.npmjs.com/package/pg)
   - [x] [`postgres`](https://www.npmjs.com/package/postgres)
   - [x] [`mysql`]()
-  - [ ] [`mysql2`]()
+  - [x] [`mysql2`]()
   - [x] [`better-sqlite3`](https://www.npmjs.com/package/better-sqlite3)
   - [ ] [`sqlite`](https://www.npmjs.com/package/sqlite)
 - [ ] complete test coverage

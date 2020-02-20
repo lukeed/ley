@@ -1,6 +1,6 @@
 {
   "name": "ley",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "repository": "lukeed/ley",
   "description": "Driver-agnostic database migrations",
   "types": "ley.d.ts",

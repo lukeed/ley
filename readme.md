@@ -77,7 +77,7 @@ Because of this, it's often recommended to prefix migrations with a timestamp or
   |-- 002-seats.js
 ```
 
-> **Note**: You may create the next file via `ley new todos --length 3` where `todos` is a meaningful name for your project.<br>The above command will create the `migrations/003-todos.js` filepath — or similar, depending on your command arguments.
+> **Note**: You may create the next file via `ley new todos --length 3` where `todos` is a meaningful name.<br>The above command will create the `migrations/003-todos.js` filepath.
 
 ***Timestamped***
 
@@ -88,7 +88,7 @@ Because of this, it's often recommended to prefix migrations with a timestamp or
   |-- 1581323458-seats.js
 ```
 
-> **Note**: You may create the next file via `ley new todos --timestamp` where `todos` is a meaningful name for your project.<br>The above command will create the `migrations/1584389617-todos.js` filepath — or similar, depending on your command arguments.
+> **Note**: You may create the next file via `ley new todos --timestamp` where `todos` is a meaningful name.<br>The above command will create the `migrations/1584389617-todos.js` filepath...or similar.
 
 
 **The order of your migrations is critically important!**<br>Migrations must be treated as an append-only immutable task chain. Without this, there's no way to _reliably_ rollback or recreate your database.

@@ -86,6 +86,13 @@ Because of this, it's often recommended to prefix migrations with a timestamp or
   |-- 1581323458383-seats.js
 ```
 
+**Tip:** Create timestamped migration files on the command line using `touch` and `date`:
+
+```
+$ touch "$(date +%s)-users.js"
+#=> 1581785004-users.js
+```
+
 **The order of your migrations is critically important!**<br>Migrations must be treated as an append-only immutable task chain. Without this, there's no way to _reliably_ rollback or recreate your database.
 
 > **Example:** (Above) You cannot apply/create `001-teams.js` _after_ `002-seats.js` has already been applied.<br>Doing so would force your teammates or database replicas to recreate "the world" in the wrong sequence.<br>This may not _always_ pose a problem (eg, unrelated tasks) but it **often does** and so `ley` enforces this practice.

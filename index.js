@@ -1,4 +1,6 @@
 const { join, resolve } = require('path');
+const { writeFileSync } = require('fs');
+const mkdirs = require('mk-dirs');
 const $ = require('./lib/util');
 
 async function parse(opts) {
@@ -67,4 +69,34 @@ exports.down = async function (opts={}) {
 	} finally {
 		if (client) await driver.end(client);
 	}
+}
+
+exports.new = async function (opts={}) {
+	let { migrations } = await parse(opts);
+
+	let prefix = '';
+	if (opts.timestamp) {
+		prefix += Date.now() / 1e3 | 0;
+	} else {
+		let tmp = migrations.pop();
+		if (tmp && /^\d+/.test(tmp.name)) {
+			tmp = parseInt(tmp.name.match(/^\d+/)[0], 10);
+			prefix = String(tmp + 1).padStart(opts.length, '0');
+		} else {
+			prefix = '0'.repeat(opts.length);
+		}
+	}
+
+	let filename = prefix + '-' + opts.filename.replace(/\s+/g, '-');
+	if (!/\.\w+$/.test(filename)) filename += '.js';
+	let dir = resolve(opts.cwd || '.', opts.dir);
+	let file = join(dir, filename);
+
+	await mkdirs(dir).then(() => {
+		let str = 'exports.up = async client => {\n\t// <insert magic here>\n};\n\n';
+		str += 'exports.down = async client => {\n\t// just in case...\n};\n';
+		writeFileSync(file, str);
+	});
+
+	return filename;
 }

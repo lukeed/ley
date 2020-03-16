@@ -33,4 +33,14 @@ sade('ley')
 		.option('-a, --all', 'Run all "down" migrations')
 		.action(wrap('down'))
 
+	.command('new <filename>')
+		.describe('Create a new migration file.')
+		.option('-t, --timestamp', 'Prefix the filename with a timestamp')
+		.option('-l, --length', 'The length of prefix, if not timestamp', 5)
+		.action((filename, opts) => {
+			opts.filename = filename;
+			return wrap('new')(opts);
+		})
+
+
 	.parse(process.argv);

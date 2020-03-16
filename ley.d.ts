@@ -17,11 +17,20 @@ declare namespace Options {
 	declare interface Down extends Base {
 		all?: boolean;
 	}
+
+	declare interface New extends Base {
+		filename: string;
+		timestamp?: boolean;
+		length?: number;
+	}
 }
 
 declare class MigrationError extends Error {
 	readonly migration: Record<'name'|'abs', string>;
 }
 
-export function up(opts?: Options.Up): Promise<void>;
-export function down(opts?: Options.Down): Promise<void>;
+export function up(opts?: Options.Up): Promise<string[]>;
+export function down(opts?: Options.Down): Promise<string[]>;
+
+declare function n(opts?: Options.New): Promise<string>;
+export { n as new };

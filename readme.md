@@ -77,21 +77,19 @@ Because of this, it's often recommended to prefix migrations with a timestamp or
   |-- 002-seats.js
 ```
 
+> **Note**: You may create the next file via `ley new todos --length 3` where `todos` is a meaningful name for your project.<br>The above command will create the `migrations/003-todos.js` filepath — or similar, depending on your command arguments.
+
 ***Timestamped***
 
 ```
 /migrations
-  |-- 1581323445664-users.js
-  |-- 1581323453868-teams.js
-  |-- 1581323458383-seats.js
+  |-- 1581323445-users.js
+  |-- 1581323453-teams.js
+  |-- 1581323458-seats.js
 ```
 
-**Tip:** Create timestamped migration files on the command line using `touch` and `date`:
+> **Note**: You may create the next file via `ley new todos --timestamp` where `todos` is a meaningful name for your project.<br>The above command will create the `migrations/1584389617-todos.js` filepath — or similar, depending on your command arguments.
 
-```
-$ touch "$(date +%s)-users.js"
-#=> 1581785004-users.js
-```
 
 **The order of your migrations is critically important!**<br>Migrations must be treated as an append-only immutable task chain. Without this, there's no way to _reliably_ rollback or recreate your database.
 
@@ -237,6 +235,47 @@ Default: `false`
 
 Enable to apply **all** migration files' `down` task.<br>
 By default, only the most recently-applied migration file is invoked.
+
+
+### ley.new(opts?)
+Returns: `Promise<string>`
+
+Returns the newly created _relative filename_ (eg, `000-users.js`).
+
+#### opts.filename
+Type: `string`
+
+**Required.** The name of the file to be created.
+
+> **Note:** A prefix will be prepended based on [`opts.timestamp`](#optstimestamp) and [`opts.length`](#optslength) values.<br>The `.js` extension will be applied unless your input already has an extension.
+
+#### opts.timestamp
+Type: `boolean`<br>
+Default: `false`
+
+Should the migration file have a timestamped prefix?<br>
+If so, will use `Date.now()` floored to the nearest second.
+
+#### opts.length
+Type: `number`<br>
+Default: `5`
+
+When **not** using a timestamped prefix, this value controls the prefix total length.<br>
+For example, `00000-users.js` will be followed by `00001-teams.js`.
+
+#### opts.cwd
+Type: `string`<br>
+Default: `.`
+
+A target location to treat as the current working directory.
+
+> **Note:** This value is `path.resolve()`d from the current `process.cwd()` location.
+
+#### opts.dir
+Type: `string`<br>
+Default: `migrations`
+
+The directory (relative to `opts.cwd`) to find migration files.
 
 
 ## License

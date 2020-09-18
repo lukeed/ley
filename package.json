@@ -22,7 +22,7 @@
     "node": ">= 8"
   },
   "scripts": {
-    "test": "tape test/*.js | tap-spec"
+    "test": "uvu test -i fixtures"
   },
   "dependencies": {
     "kleur": "^3.0.3",
@@ -31,7 +31,6 @@
     "totalist": "^1.0.1"
   },
   "devDependencies": {
-    "tap-spec": "5.0.0",
-    "tape": "4.13.0"
+    "uvu": "0.3.3"
   }
 }

@@ -7,7 +7,7 @@
     <img src="https://badgen.net/npm/v/ley" alt="version" />
   </a>
   <a href="https://github.com/lukeed/ley/actions">
-    <img src="https://badgen.net/github/status/lukeed/ley" alt="status" />
+    <img src="https://github.com/lukeed/ley/workflows/CI/badge.svg" alt="CI" />
   </a>
   <a href="https://npmjs.org/package/ley">
     <img src="https://badgen.net/npm/dm/ley" alt="downloads" />

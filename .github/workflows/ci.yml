@@ -11,10 +11,7 @@ jobs:
         nodejs: [8, 10, 12]
         os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
-    - uses: actions/checkout@master
-      with:
-        fetch-depth: 1
-
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.nodejs }}
@@ -28,7 +25,7 @@ jobs:
       run: nyc npm test
 
     - name: Report
-      if: matrix.nodejs >= 12 && matrix.os == 'macOS-latest'
+      if: matrix.nodejs >= 12 && matrix.os == 'ubuntu-latest'
       run: |
         nyc report --reporter=text-lcov > coverage.lcov
         bash <(curl -s https://codecov.io/bash)

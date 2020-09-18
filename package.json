@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "kleur": "^3.0.3",
-    "mk-dirs": "^2.0.0",
+    "mk-dirs": "^3.0.0",
     "sade": "^1.7.0",
     "totalist": "^2.0.0"
   },

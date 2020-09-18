@@ -1,6 +1,6 @@
 const { join, resolve } = require('path');
 const { writeFileSync } = require('fs');
-const mkdirs = require('mk-dirs');
+const { mkdir } = require('mk-dirs');
 const $ = require('./lib/util');
 
 async function parse(opts) {
@@ -92,7 +92,7 @@ exports.new = async function (opts={}) {
 	let dir = resolve(opts.cwd || '.', opts.dir);
 	let file = join(dir, filename);
 
-	await mkdirs(dir).then(() => {
+	await mkdir(dir).then(() => {
 		let str = 'exports.up = async client => {\n\t// <insert magic here>\n};\n\n';
 		str += 'exports.down = async client => {\n\t// just in case...\n};\n';
 		writeFileSync(file, str);

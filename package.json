@@ -28,7 +28,7 @@
     "kleur": "^3.0.3",
     "mk-dirs": "^2.0.0",
     "sade": "^1.7.0",
-    "totalist": "^1.0.1"
+    "totalist": "^2.0.0"
   },
   "devDependencies": {
     "uvu": "0.3.3"

@@ -38,8 +38,6 @@ exports.up = async function (opts={}) {
 		const toRun = opts.single ? [fresh[0]] : fresh;
 		await driver.loop(client, toRun, 'up');
 		return toRun.map(x => x.name);
-	} catch (err) {
-		throw err;
 	} finally {
 		if (client) await driver.end(client);
 	}
@@ -64,8 +62,6 @@ exports.down = async function (opts={}) {
 		const toRun = $.pluck(opts.all ? exists : [last], migrations.slice(idx));
 		await driver.loop(client, toRun, 'down');
 		return toRun.map(x => x.name);
-	} catch (err) {
-		throw err;
 	} finally {
 		if (client) await driver.end(client);
 	}

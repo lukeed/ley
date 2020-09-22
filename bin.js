@@ -20,7 +20,7 @@ sade('ley')
 	.version(pkg.version)
 	.option('-C, --cwd', 'The current directory to resolve from', '.')
 	.option('-d, --dir', 'The directory of migration files to run', 'migrations')
-	.option('-c, --config', 'Path to \`ley\` config file', 'ley.config.js')
+	.option('-c, --config', 'Path to `ley` config file', 'ley.config.js')
 	.option('-r, --require', 'Additional module(s) to preload')
 
 	.command('up')

@@ -158,23 +158,24 @@ A config file is entirely optional since `ley` assumes that you're providing the
 
 Out of the box, `ley` includes drivers for the following npm packages:
 
-* [`pg`](https://www.npmjs.com/package/pg)
 * [`postgres`](https://www.npmjs.com/package/postgres)
+* [`pg`](https://www.npmjs.com/package/pg)
 * [`mysql`](https://www.npmjs.com/package/mysql)
 * [`mysql2`](https://www.npmjs.com/package/mysql2)
 * [`better-sqlite3`](https://www.npmjs.com/package/better-sqlite3)
 
-Should you need a driver that's not listed above – or to override a supplied driver – you may easily do via a number of avenues:
+When no driver is specified, `ley` will attempt to autodetect usage of these libraries in the above order.
 
-1) CLI users can add `--driver <name>` to any command; or
+However, should you need a driver that's not listed – or should you need to override a supplied driver – you may easily do so via a number of avenues:
+
+1) CLI users can add `--driver <filename>` to any command; or
 2) Programmatic users can pass [`opts.driver`](#optsdriver) to any command; or
 3) A `ley.config.js` file can export a special `driver` config key.
 
-With the latter two options, if `driver` is a string then it will be passed through `require()` automatically. Otherwise it is assumed to be a [`Driver`]() class and is validated as such.
+With any of these, if `driver` is a string then it will be passed through `require()` automatically. Otherwise, with the latter two, the `driver` is assumed to be a [`Driver`](/ley.d.ts#L46-L68) class and is validated as such.
 
-> **Important:** All drivers must adhere to the [`Driver` interface](#TODO)!
+> **Important:** All drivers must adhere to the [`Driver` interface](/ley.d.ts#L46-L68)!
 
-Whenever a custom Driver is supplied (no matter the avenue), `ley` will ignore `opts.client`, `--client`, and/or skip its auto-detection.
 
 ## API
 
@@ -259,26 +260,17 @@ Default: `migrations`
 
 The directory (relative to `opts.cwd`) to find migration files.
 
-#### opts.client
-Type: `string`<br>
-Default: `undefined`
-
-The **name** of your desired client driver; for example, `pg`.<br>
-When unspecified, `ley` searches for all supported client drivers in this order:
-
-```js
-['postgres', 'pg', 'mysql', 'mysql2', 'better-sqlite3']
-```
-
 #### opts.driver
 Type: `string` or `Driver`
 Default: `undefined`
 
-When a `string`, this is the **name** of your custom [driver](#drivers) implementation. It will pass through `require()` as written.
+When defined and a `string`, this is the **name** of your [driver](#drivers) implementation. It will pass through `require()` as written. Otherwise it's expected to match a [`Driver` interface](/ley.d.ts#L46-L68) and will be validated immediately.
 
-Otherwise it's expected to match a [`Driver` interface](#TODO) and will be validated immediately.
+When undefined, `ley` searches for all supported client drivers in this order:
 
-> **Important:** When defined, `ley` ignores [`opts.client`](#optsclient) and/or skips client auto-detection entirely!
+```js
+['postgres', 'pg', 'mysql', 'mysql2', 'better-sqlite3']
+```
 
 #### opts.config
 Type: `object`<br>

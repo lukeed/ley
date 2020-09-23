@@ -150,10 +150,72 @@ const successes = await ley.up({ ... });
 
 ## API
 
+> **Important:** See [Options](#options) for common options shared all commands. <br>In this `API` section, you will only find **command-specific** options listed.
+
+
 ### ley.up(opts?)
 Returns: `Promise<string[]>`
 
 Returns a list of the _relative filenames_ (eg, `000-users.js`) that were successfully applied.
+
+#### opts.single
+Type: `boolean`<br>
+Default: `false`
+
+Enable to apply **only one** migration file's `up` task.<br>
+By default, all migration files will be queue for application.
+
+
+
+### ley.down(opts?)
+Returns: `Promise<string[]>`
+
+Returns a list of the _relative filenames_ (eg, `000-users.js`) that were successfully applied.
+
+#### opts.all
+Type: `boolean`<br>
+Default: `false`
+
+Enable to apply **all** migration files' `down` task.<br>
+By default, only the most recently-applied migration file is invoked.
+
+
+### ley.status(opts?)
+Returns: `Promise<string[]>`
+
+Returns a list of the _relative filenames_ (eg, `000-users.js`) that have not yet been applied.
+
+
+### ley.new(opts?)
+Returns: `Promise<string>`
+
+Returns the newly created _relative filename_ (eg, `000-users.js`).
+
+#### opts.filename
+Type: `string`
+
+**Required.** The name of the file to be created.
+
+> **Note:** A prefix will be prepended based on [`opts.timestamp`](#optstimestamp) and [`opts.length`](#optslength) values.<br>The `.js` extension will be applied unless your input already has an extension.
+
+#### opts.timestamp
+Type: `boolean`<br>
+Default: `false`
+
+Should the migration file have a timestamped prefix?<br>
+If so, will use `Date.now()` floored to the nearest second.
+
+#### opts.length
+Type: `number`<br>
+Default: `5`
+
+When **not** using a timestamped prefix, this value controls the prefix total length.<br>
+For example, `00000-users.js` will be followed by `00001-teams.js`.
+
+
+## Options
+
+> **Note:** These are available to _all_ `ley` commands. <br>_See [API](#api) for programmatic command documentation._
 
 #### opts.cwd
 Type: `string`<br>
@@ -189,124 +251,6 @@ When unspecified, `ley` assumes that your client driver is able to connect throu
 
 >**Note:** The `ley` CLI will search for a `ley.config.js` config file (configurable).<br>
 If found, this file may contain an object or a function that resolves to your config object.
-
-#### opts.single
-Type: `boolean`<br>
-Default: `false`
-
-Enable to apply **only one** migration file's `up` task.<br>
-By default, all migration files will be queue for application.
-
-
-
-### ley.down(opts?)
-Returns: `Promise<string[]>`
-
-Returns a list of the _relative filenames_ (eg, `000-users.js`) that were successfully applied.
-
-#### opts.cwd
-Type: `string`<br>
-Default: `.`
-
-A target location to treat as the current working directory.
-
-> **Note:** This value is `path.resolve()`d from the current `process.cwd()` location.
-
-#### opts.dir
-Type: `string`<br>
-Default: `migrations`
-
-The directory (relative to `opts.cwd`) to find migration files.
-
-#### opts.client
-Type: `string`<br>
-Default: `undefined`
-
-The **name** of your desired client driver; for example, `pg`.<br>
-When unspecified, `ley` searches for all supported client drivers in this order:
-
-```js
-['postgres', 'pg']; // TODO: more
-```
-
-#### opts.all
-Type: `boolean`<br>
-Default: `false`
-
-Enable to apply **all** migration files' `down` task.<br>
-By default, only the most recently-applied migration file is invoked.
-
-
-### ley.status(opts?)
-Returns: `Promise<string[]>`
-
-Returns a list of the _relative filenames_ (eg, `000-users.js`) that have not yet been applied.
-
-#### opts.cwd
-Type: `string`<br>
-Default: `.`
-
-A target location to treat as the current working directory.
-
-> **Note:** This value is `path.resolve()`d from the current `process.cwd()` location.
-
-#### opts.dir
-Type: `string`<br>
-Default: `migrations`
-
-The directory (relative to `opts.cwd`) to find migration files.
-
-#### opts.client
-Type: `string`<br>
-Default: `undefined`
-
-The **name** of your desired client driver; for example, `pg`.<br>
-When unspecified, `ley` searches for all supported client drivers in this order:
-
-```js
-['postgres', 'pg']; // TODO: more
-```
-
-
-### ley.new(opts?)
-Returns: `Promise<string>`
-
-Returns the newly created _relative filename_ (eg, `000-users.js`).
-
-#### opts.filename
-Type: `string`
-
-**Required.** The name of the file to be created.
-
-> **Note:** A prefix will be prepended based on [`opts.timestamp`](#optstimestamp) and [`opts.length`](#optslength) values.<br>The `.js` extension will be applied unless your input already has an extension.
-
-#### opts.timestamp
-Type: `boolean`<br>
-Default: `false`
-
-Should the migration file have a timestamped prefix?<br>
-If so, will use `Date.now()` floored to the nearest second.
-
-#### opts.length
-Type: `number`<br>
-Default: `5`
-
-When **not** using a timestamped prefix, this value controls the prefix total length.<br>
-For example, `00000-users.js` will be followed by `00001-teams.js`.
-
-#### opts.cwd
-Type: `string`<br>
-Default: `.`
-
-A target location to treat as the current working directory.
-
-> **Note:** This value is `path.resolve()`d from the current `process.cwd()` location.
-
-#### opts.dir
-Type: `string`<br>
-Default: `migrations`
-
-The directory (relative to `opts.cwd`) to find migration files.
 
 
 ## License

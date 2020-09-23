@@ -239,7 +239,7 @@ The **name** of your desired client driver; for example, `pg`.<br>
 When unspecified, `ley` searches for all supported client drivers in this order:
 
 ```js
-['postgres', 'pg']; // TODO: more
+['postgres', 'pg', 'mysql', 'mysql2', 'better-sqlite3']
 ```
 
 #### opts.config

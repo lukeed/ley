@@ -33,6 +33,10 @@ sade('ley')
 		.option('-a, --all', 'Run all "down" migrations')
 		.action(wrap('down'))
 
+	.command('status')
+		.describe('Check for migration status. Counts unapplied migrations.')
+		.action(wrap('status'))
+
 	.command('new <filename>')
 		.describe('Create a new migration file.')
 		.option('-t, --timestamp', 'Prefix the filename with a timestamp')
@@ -41,6 +45,5 @@ sade('ley')
 			opts.filename = filename;
 			return wrap('new')(opts);
 		})
-
 
 	.parse(process.argv);

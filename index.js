@@ -13,18 +13,16 @@ async function parse(opts) {
 		throw new Error(`Cannot find module '${name}'`);
 	});
 
-	// cli(`--driver`) or config(exports.driver)
-	let driver = opts.driver || opts.config.driver;
-	if (typeof driver === 'string') driver = require(driver); // ok
+	// cli(`--driver`) > config(exports.driver) > autodetect
+	let driver = opts.driver || opts.config.driver || $.detect();
+	if (!driver) throw new Error('Unable to locate a database driver');
 
-	if (driver) {
-		$.isDriver(driver);
+	// allow `require` throws
+	if ($.drivers.includes(driver)) {
+		driver = require(join(__dirname, 'lib', 'clients', driver));
 	} else {
-		const lib = opts.client || $.detect();
-		if (!lib) throw new Error('Unable to locate a database driver');
-
-		const file = join(__dirname, 'lib', 'clients', lib);
-		driver = require(file); // allow throw here
+		if (typeof driver === 'string') driver = require(driver);
+		$.isDriver(driver); // throws validation error(s)
 	}
 
 	const migrations = await $.glob(dir);

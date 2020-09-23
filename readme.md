@@ -252,6 +252,29 @@ When unspecified, `ley` assumes that your client driver is able to connect throu
 >**Note:** The `ley` CLI will search for a `ley.config.js` config file (configurable).<br>
 If found, this file may contain an object or a function that resolves to your config object.
 
+#### opts.require
+Type: `string` or `string[]`<br>
+Default: `undefined`
+
+A module name (or list of names) to be `require`d by `ley` at startup.
+
+For example, you may want to use [`dotenv`](http://npmjs.com/package/dotenv) to load existing `.env` file(s) in your project:
+
+```js
+const ley = require('ley');
+
+const files = await ley.status({
+  require: ['dotenv/config']
+});
+```
+
+Through [CLI](#cli) usage, this is equivalent to:
+
+```sh
+$ ley -r dotenv/config status
+# or
+$ ley --require dotenv/config status
+```
 
 ## License
 

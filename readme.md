@@ -172,9 +172,9 @@ However, should you need a driver that's not listed – or should you need to ov
 2) Programmatic users can pass [`opts.driver`](#optsdriver) to any command; or
 3) A `ley.config.js` file can export a special `driver` config key.
 
-With any of these, if `driver` is a string then it will be passed through `require()` automatically. Otherwise, with the latter two, the `driver` is assumed to be a [`Driver`](/ley.d.ts#L46-L68) class and is validated as such.
+With any of these, if `driver` is a string then it will be passed through `require()` automatically. Otherwise, with the latter two, the `driver` is assumed to be a [`Driver`](/ley.d.ts#L45-L67) class and is validated as such.
 
-> **Important:** All drivers must adhere to the [`Driver` interface](/ley.d.ts#L46-L68)!
+> **Important:** All drivers must adhere to the [`Driver` interface](/ley.d.ts#L45-L67)!
 
 
 ## API
@@ -264,7 +264,7 @@ The directory (relative to `opts.cwd`) to find migration files.
 Type: `string` or `Driver`
 Default: `undefined`
 
-When defined and a `string`, this is the **name** of your [driver](#drivers) implementation. It will pass through `require()` as written. Otherwise it's expected to match a [`Driver` interface](/ley.d.ts#L46-L68) and will be validated immediately.
+When defined and a `string`, this is the **name** of your [driver](#drivers) implementation. It will pass through `require()` as written. Otherwise it's expected to match a [`Driver` interface](/ley.d.ts#L45-L67) and will be validated immediately.
 
 When undefined, `ley` searches for all supported client drivers in this order:
 

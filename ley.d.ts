@@ -4,7 +4,6 @@ declare namespace Options {
 
 	declare interface Base {
 		cwd?: string;
-		client?: string;
 		driver?: string | Driver;
 		require?: string | string[];
 		config?: Config | Resolver;

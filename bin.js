@@ -21,7 +21,7 @@ sade('ley')
 	.option('-C, --cwd', 'The current directory to resolve from', '.')
 	.option('-d, --dir', 'The directory of migration files to run', 'migrations')
 	.option('-c, --config', 'Path to `ley` config file', 'ley.config.js')
-	.option('-D, --driver', 'The name of a custom client driver')
+	.option('-D, --driver', 'The name of a database client driver')
 	.option('-r, --require', 'Additional module(s) to preload')
 
 	.command('up')

@@ -9,15 +9,23 @@ async function parse(opts) {
 
 	[].concat(opts.require || []).filter(Boolean).forEach(name => {
 		const tmp = $.exists(name);
-		if (!tmp) throw new Error(`Cannot find module '${name}'`);
-		return require(tmp);
+		if (tmp) return require(tmp);
+		throw new Error(`Cannot find module '${name}'`);
 	});
 
-	const lib = opts.client || $.detect();
-	if (!lib) throw new Error('Unable to locate a SQL driver');
+	// cli(`--driver`) or config(exports.driver)
+	let driver = opts.driver || opts.config.driver;
+	if (typeof driver === 'string') driver = require(driver); // ok
 
-	const file = join(__dirname, 'lib', 'clients', lib);
-	const driver = require(file); // allow throw here
+	if (driver) {
+		$.isDriver(driver);
+	} else {
+		const lib = opts.client || $.detect();
+		if (!lib) throw new Error('Unable to locate a database driver');
+
+		const file = join(__dirname, 'lib', 'clients', lib);
+		driver = require(file); // allow throw here
+	}
 
 	const migrations = await $.glob(dir);
 

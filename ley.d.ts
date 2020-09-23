@@ -1,6 +1,6 @@
 declare namespace Options {
 	declare type Config = Record<string, unknown>;
-	declare type Resolver = () => Config;
+	declare type Resolver = Promise<Config> | () => Config;
 
 	declare interface Base {
 		cwd?: string;

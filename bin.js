@@ -10,7 +10,7 @@ function wrap(act) {
 	return async (opts, tmp) => {
 		if (tmp = local(opts.config, opts.cwd)) {
 			$.info('Loading configuration');
-			opts.config = typeof tmp === 'function' ? tmp() : tmp;
+			opts.config = await (typeof tmp === 'function' ? tmp() : tmp);
 		}
 		await ley[act](opts).then(done).catch($.bail);
 	};

@@ -237,6 +237,37 @@ Enable to apply **all** migration files' `down` task.<br>
 By default, only the most recently-applied migration file is invoked.
 
 
+### ley.status(opts?)
+Returns: `Promise<string[]>`
+
+Returns a list of the _relative filenames_ (eg, `000-users.js`) that have not yet been applied.
+
+#### opts.cwd
+Type: `string`<br>
+Default: `.`
+
+A target location to treat as the current working directory.
+
+> **Note:** This value is `path.resolve()`d from the current `process.cwd()` location.
+
+#### opts.dir
+Type: `string`<br>
+Default: `migrations`
+
+The directory (relative to `opts.cwd`) to find migration files.
+
+#### opts.client
+Type: `string`<br>
+Default: `undefined`
+
+The **name** of your desired client driver; for example, `pg`.<br>
+When unspecified, `ley` searches for all supported client drivers in this order:
+
+```js
+['postgres', 'pg']; // TODO: more
+```
+
+
 ### ley.new(opts?)
 Returns: `Promise<string>`
 

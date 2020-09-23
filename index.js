@@ -67,6 +67,18 @@ exports.down = async function (opts={}) {
 	}
 }
 
+exports.status = async function (opts={}) {
+	let client, { driver, migrations } = await parse(opts);
+
+	try {
+		client = await driver.connect(opts.config);
+		const exists = await driver.setup(client);
+		return $.diff(exists, migrations).map(x => x.name);
+	} finally {
+		if (client) await driver.end(client);
+	}
+}
+
 exports.new = async function (opts={}) {
 	let { migrations } = await parse(opts);
 

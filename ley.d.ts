@@ -31,6 +31,7 @@ declare class MigrationError extends Error {
 
 export function up(opts?: Options.Up): Promise<string[]>;
 export function down(opts?: Options.Down): Promise<string[]>;
+export function status(opts?: Options.Base): Promise<string[]>;
 
 declare function n(opts?: Options.New): Promise<string>;
 export { n as new };

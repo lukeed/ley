@@ -231,4 +231,58 @@ test('(utils) MigrationError', () => {
 	assert.equal(error.migration, migration, 'attaches custom "migration" key w/ file data');
 });
 
+test('(utils) isDriver :: connect', () => {
+	assert.throws(
+		() => $.isDriver({}),
+		'Driver must have "connect" function'
+	);
+
+	assert.throws(
+		() => $.isDriver({ connect: 123 }),
+		'Driver must have "connect" function'
+	);
+});
+
+test('(utils) isDriver :: setup', () => {
+	let noop = () => {};
+
+	assert.throws(
+		() => $.isDriver({ connect: noop }),
+		'Driver must have "setup" function'
+	);
+
+	assert.throws(
+		() => $.isDriver({ connect: noop, setup: 123 }),
+		'Driver must have "setup" function'
+	);
+});
+
+test('(utils) isDriver :: loop', () => {
+	let noop = () => {};
+
+	assert.throws(
+		() => $.isDriver({ connect: noop, setup: noop }),
+		'Driver must have "loop" function'
+	);
+
+	assert.throws(
+		() => $.isDriver({ connect: noop, setup: noop, loop: 123 }),
+		'Driver must have "loop" function'
+	);
+});
+
+test('(utils) isDriver :: end', () => {
+	let noop = () => {};
+
+	assert.throws(
+		() => $.isDriver({ connect: noop, setup: noop, loop: noop }),
+		'Driver must have "end" function'
+	);
+
+	assert.throws(
+		() => $.isDriver({ connect: noop, setup: noop, loop: noop, end: 123 }),
+		'Driver must have "end" function'
+	);
+});
+
 test.run();

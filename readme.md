@@ -23,8 +23,8 @@
 - [ ] driver support:
   - [x] [`pg`](https://www.npmjs.com/package/pg)
   - [x] [`postgres`](https://www.npmjs.com/package/postgres)
-  - [x] [`mysql`]()
-  - [x] [`mysql2`]()
+  - [x] [`mysql`](https://www.npmjs.com/package/mysql)
+  - [x] [`mysql2`](https://www.npmjs.com/package/mysql2)
   - [x] [`better-sqlite3`](https://www.npmjs.com/package/better-sqlite3)
   - [ ] [`sqlite`](https://www.npmjs.com/package/sqlite)
 - [ ] complete test coverage
@@ -33,7 +33,7 @@
 ## Features
 
 * **Agnostic**<br>
-  _Supports [`postgres`](https://www.npmjs.com/package/postgres), [`pg`](https://www.npmjs.com/package/pg), [`better-sqlite3`](https://www.npmjs.com/package/better-sqlite3), [`sqlite`](https://www.npmjs.com/package/sqlite), [`mysql`](https://www.npmjs.com/package/mysql), and [`mysql2`](https://www.npmjs.com/package/mysql2)_
+  _Supports [`postgres`](https://www.npmjs.com/package/postgres), [`pg`](https://www.npmjs.com/package/pg), [`better-sqlite3`](https://www.npmjs.com/package/better-sqlite3), [`sqlite`](https://www.npmjs.com/package/sqlite), [`mysql`](https://www.npmjs.com/package/mysql), [`mysql2`](https://www.npmjs.com/package/mysql2), and [custom drivers!](#drivers)_
 
 * **Lightweight**<br>
   _Does **not** include any driver dependencies._
@@ -148,6 +148,35 @@ const ley = require('ley');
 const successes = await ley.up({ ... });
 ```
 
+## Config
+
+> **TL;DR:** The contents of a `ley.config.js` file (default file name) is irrelevant to `ley` itself!
+
+A config file is entirely optional since `ley` assumes that you're providing the correct environment variable(s) for your client driver. However, that may not always be possible. In those instances, a `ley.config.js` file (default file name) can be used to adjust your [driver](#drivers)'s `connect` method.
+
+## Drivers
+
+Out of the box, `ley` includes drivers for the following npm packages:
+
+* [`postgres`](https://www.npmjs.com/package/postgres)
+* [`pg`](https://www.npmjs.com/package/pg)
+* [`mysql`](https://www.npmjs.com/package/mysql)
+* [`mysql2`](https://www.npmjs.com/package/mysql2)
+* [`better-sqlite3`](https://www.npmjs.com/package/better-sqlite3)
+
+When no driver is specified, `ley` will attempt to autodetect usage of these libraries in the above order.
+
+However, should you need a driver that's not listed – or should you need to override a supplied driver – you may easily do so via a number of avenues:
+
+1) CLI users can add `--driver <filename>` to any command; or
+2) Programmatic users can pass [`opts.driver`](#optsdriver) to any command; or
+3) A `ley.config.js` file can export a special `driver` config key.
+
+With any of these, if `driver` is a string then it will be passed through `require()` automatically. Otherwise, with the latter two, the `driver` is assumed to be a [`Driver`](/ley.d.ts#L45-L67) class and is validated as such.
+
+> **Important:** All drivers must adhere to the [`Driver` interface](/ley.d.ts#L45-L67)!
+
+
 ## API
 
 > **Important:** See [Options](#options) for common options shared all commands. <br>In this `API` section, you will only find **command-specific** options listed.
@@ -231,12 +260,13 @@ Default: `migrations`
 
 The directory (relative to `opts.cwd`) to find migration files.
 
-#### opts.client
-Type: `string`<br>
+#### opts.driver
+Type: `string` or `Driver`
 Default: `undefined`
 
-The **name** of your desired client driver; for example, `pg`.<br>
-When unspecified, `ley` searches for all supported client drivers in this order:
+When defined and a `string`, this is the **name** of your [driver](#drivers) implementation. It will pass through `require()` as written. Otherwise it's expected to match a [`Driver` interface](/ley.d.ts#L45-L67) and will be validated immediately.
+
+When undefined, `ley` searches for all supported client drivers in this order:
 
 ```js
 ['postgres', 'pg', 'mysql', 'mysql2', 'better-sqlite3']
@@ -249,8 +279,9 @@ Default: `undefined`
 A configuration object for your client driver to establish a connection.<br>
 When unspecified, `ley` assumes that your client driver is able to connect through `process.env` variables.
 
->**Note:** The `ley` CLI will search for a `ley.config.js` config file (configurable).<br>
-If found, this file may contain an object or a function that resolves to your config object.
+> **Note:** The `ley` CLI will search for a `ley.config.js` config file (configurable). <br>
+If found, this file may contain an object or a function that resolves to _anything_ of your chosing. <br>
+Please see [Config](#config) for more information.
 
 #### opts.require
 Type: `string` or `string[]`<br>
@@ -275,6 +306,7 @@ $ ley -r dotenv/config status
 # or
 $ ley --require dotenv/config status
 ```
+
 
 ## License
 

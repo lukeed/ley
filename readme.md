@@ -152,7 +152,7 @@ const successes = await ley.up({ ... });
 
 > **TL;DR:** The contents of a `ley.config.js` file (default file name) is irrelevant to `ley` itself!
 
-A config file is entirely optional since `ley` assumes that you're providing the correct environment variable(s) for your client driver. However, that may not always be possible. In those instances, a `ley.config.js` file (default file name) can be used to adjust your [driver](#drivers)'s `connect` method.
+A config file is entirely optional since `ley` assumes that you're providing the correct environment variable(s) for your client driver. However, that may not always be possible. In those instances, a `ley.config.js` file (default file name) can be used to adjust your [driver](#drivers)'s `connect` method – the file contents are passed directly to this function.
 
 ## Drivers
 
@@ -261,10 +261,12 @@ Default: `migrations`
 The directory (relative to `opts.cwd`) to find migration files.
 
 #### opts.driver
-Type: `string` or `Driver`
+Type: `string` or `Driver`<br>
 Default: `undefined`
 
-When defined and a `string`, this is the **name** of your [driver](#drivers) implementation. It will pass through `require()` as written. Otherwise it's expected to match a [`Driver` interface](/ley.d.ts#L45-L67) and will be validated immediately.
+When defined and a `string`, this can be (a) the **name** of an internal driver, (b) the **name** of a third-party [driver](#drivers) module, or (c) a **filepath** to a local [driver](#drivers) implementation. It will pass through `require()` as written.
+
+When defined an _not_ a `string`, it's expected to match the [`Driver` interface](/ley.d.ts#L45-L67) and will be validated immediately.
 
 When undefined, `ley` searches for all supported client drivers in this order:
 

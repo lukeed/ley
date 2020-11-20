@@ -154,6 +154,37 @@ const successes = await ley.up({ ... });
 
 A config file is entirely optional since `ley` assumes that you're providing the correct environment variable(s) for your client driver. However, that may not always be possible. In those instances, a `ley.config.js` file (default file name) can be used to adjust your [driver](#drivers)'s `connect` method – the file contents are passed directly to this function.
 
+For example, if your hosting provider sets non-standard environment variables for the client driver (like Heroku does), you could extract the information and set the standard environment variables:
+
+```js
+// ley.config.js
+if (process.env.DATABASE_URL) {
+  const { parse } = require('pg-connection-string');
+
+  // Extract the connection information from the Heroku environment variable
+  const { host, database, user, password } = parse(process.env.DATABASE_URL);
+
+  // Set standard environment variables
+  process.env.PGHOST = host;
+  process.env.PGDATABASE = database;
+  process.env.PGUSERNAME = user;
+  process.env.PGPASSWORD = password;
+}
+```
+
+Or, if your database provider requires certain SSL connection options to be set in production, you could do that:
+
+```js
+// ley.config.js
+const options = {};
+
+if (process.env.NODE_ENV === 'production') {
+  options.ssl = true;
+}
+
+module.exports = options;
+```
+
 ## Drivers
 
 Out of the box, `ley` includes drivers for the following npm packages:

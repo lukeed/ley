@@ -159,16 +159,15 @@ For example, if your hosting provider sets non-standard environment variables fo
 ```js
 // ley.config.js
 if (process.env.DATABASE_URL) {
-  const url = require('url');
+  const { parse } = require('pg-connection-string');
 
   // Extract the connection information from the Heroku environment variable
-  const { hostname, pathname, auth } = url.parse(process.env.DATABASE_URL);
-  const [username, password] = auth.split(':');
+  const { host, database, user, password } = parse(process.env.DATABASE_URL);
 
   // Set standard environment variables
-  process.env.PGHOST = hostname;
-  process.env.PGDATABASE = pathname.slice(1);
-  process.env.PGUSERNAME = username;
+  process.env.PGHOST = host;
+  process.env.PGDATABASE = database;
+  process.env.PGUSERNAME = user;
   process.env.PGPASSWORD = password;
 }
 ```

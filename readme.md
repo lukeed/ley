@@ -208,14 +208,16 @@ With any of these, if `driver` is a string then it will be passed through `requi
 > **Important:** All drivers must adhere to the [`Driver` interface](/ley.d.ts#L45-L67)!
 
 
-## Usage with TypeScript / JSDoc
+## Typed Migrations
 
-In order to write types in your migration files, there are two options:
+For extra confidence while writing your migration file(s), there are two options:
 
 ### TypeScript
 
-1. Install [`ts-node`](https://www.npmjs.com/package/ts-node)
-2. If your `tsconfig.json` specifies a target other than `commonjs`, then set it for `ts-node` like this:
+1. Ensure [`ts-node`](https://www.npmjs.com/package/ts-node) is installed
+
+2. Define a `ts-node` configuration block inside your `tsconfig.json` file:
+
    ```json
    {
      "ts-node": {
@@ -226,14 +228,18 @@ In order to write types in your migration files, there are two options:
      }
    }
    ```
-3. Run `ley` with the [`require` option](#optsrequire) like this:
-   ```bash
-   ley -r ts-node/register <cmd>
+   
+3. Run `ley` with the [`require`](#optsrequire) option so that `ts-node` can process file(s)
+
+   ```sh
+   $ ley -r ts-node/register <cmd>
+   # or
+   $ ley --require ts-node/register <cmd>
    ```
 
 ### JSDoc
 
-If you want to have the benefits of types without the installation and configuration, you can alternatively write your annotations inline using [JSDoc](https://jsdoc.app/) annotations like this:
+You may also use [JSDoc](https://jsdoc.app/) annotations throughout your file to achieve (most) of the benefits of TypeScript, but without installing and configuring TypeScript.
 
 ```js
 /** @param {import('pg').Client} DB */

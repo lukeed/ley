@@ -208,6 +208,46 @@ With any of these, if `driver` is a string then it will be passed through `requi
 > **Important:** All drivers must adhere to the [`Driver` interface](/ley.d.ts#L45-L67)!
 
 
+## Typed Migrations
+
+For extra confidence while writing your migration file(s), there are two options:
+
+### TypeScript
+
+1. Ensure [`ts-node`](https://www.npmjs.com/package/ts-node) is installed
+
+2. Define a `ts-node` configuration block inside your `tsconfig.json` file:
+
+   ```json
+   {
+     "ts-node": {
+       "transpileOnly": true,
+       "compilerOptions": {
+         "module": "commonjs"
+       }
+     }
+   }
+   ```
+   
+3. Run `ley` with the [`require`](#optsrequire) option so that `ts-node` can process file(s)
+
+   ```sh
+   $ ley -r ts-node/register <cmd>
+   # or
+   $ ley --require ts-node/register <cmd>
+   ```
+
+### JSDoc
+
+You may also use [JSDoc](https://jsdoc.app/) annotations throughout your file to achieve (most) of the benefits of TypeScript, but without installing and configuring TypeScript.
+
+```js
+/** @param {import('pg').Client} DB */
+exports.up = async function (DB) {
+  await DB.query(...)
+}
+```
+
 ## API
 
 > **Important:** See [Options](#options) for common options shared all commands. <br>In this `API` section, you will only find **command-specific** options listed.

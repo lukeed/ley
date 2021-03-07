@@ -31,6 +31,6 @@
     "totalist": "^2.0.0"
   },
   "devDependencies": {
-    "uvu": "0.3.3"
+    "uvu": "0.5.1"
   }
 }

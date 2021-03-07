@@ -185,6 +185,12 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = options;
 ```
 
+When the config filename uses the `.js` extension, then `ley` will attempt to auto-load a `.mjs` or a `.cjs` variant of the file if/when the original `.js` file was not found. This means that, by default, these files are searched (in order):
+
+* `ley.config.js`
+* `ley.config.mjs`
+* `ley.config.cjs`
+
 ## ES Modules
 
 As of `ley@0.7.0` and Node.js 12+, you may choose to use [ECMAScript modules (ESM)](https://nodejs.org/api/esm.html). There are a few ways to take advantage of this:

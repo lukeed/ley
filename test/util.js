@@ -1,13 +1,22 @@
-const { test } = require('uvu');
+const { suite } = require('uvu');
+const semiver = require('semiver');
 const assert = require('uvu/assert');
-const { join, isAbsolute } = require('path');
+const { join, isAbsolute, resolve } = require('path');
 const $ = require('../lib/util');
 
-const cwd = join(__dirname, 'fixtures', 'pg');
-const dir = join(cwd, 'migrations');
+const fixtures = join(__dirname, 'fixtures');
 
-test('(utils) glob', async () => {
-	const out = await $.glob(dir);
+const version = process.version.substring(1);
+const hasImports = semiver(version, '12.0.0') > 0;
+
+// ---
+
+const glob = suite('$.glob', {
+	dir: join(fixtures, 'pg', 'migrations')
+});
+
+glob('usage', async ctx => {
+	const out = await $.glob(ctx.dir);
 	assert.ok(Array.isArray(out), 'returns Promise<Array>');
 	assert.is(out.length, 6, '~> has 6 items');
 
@@ -22,12 +31,11 @@ test('(utils) glob', async () => {
 	assert.equal(names, expects, '~> file order is expected');
 });
 
-
-test('(utils) glob :: throws', async () => {
+glob('throws', async ctx => {
 	let caught = false;
 
 	try {
-		await $.glob(join(cwd, 'foobar'));
+		await $.glob(join(ctx.dir, 'foobar'));
 		assert.unreachable('should not run');
 	} catch (err) {
 		assert.instance(err, Error, 'throws an Error');
@@ -39,8 +47,13 @@ test('(utils) glob :: throws', async () => {
 	assert.ok(caught);
 });
 
+glob.run();
 
-test('(utils) diff', () => {
+// ---
+
+const diff = suite('$.diff');
+
+diff('usage', () => {
 	const exists = ['001', '002', '003'].map(name => ({ name }));
 	const locals = ['001', '002', '003', '004', '005'].map(name => ({ name }));
 
@@ -53,8 +66,7 @@ test('(utils) diff', () => {
 	assert.equal(names, ['004', '005']);
 });
 
-
-test('(utils) diff :: identical', () => {
+diff('identical', () => {
 	const exists = ['001', '002', '003'].map(name => ({ name }));
 	const locals = ['001', '002', '003'].map(name => ({ name }));
 
@@ -63,8 +75,7 @@ test('(utils) diff :: identical', () => {
 	assert.is(output.length, 0, '~> has 0 NEW items');
 });
 
-
-test('(utils) diff :: throws sequence error', () => {
+diff('throws sequence error', () => {
 	let caught = false;
 
 	try {
@@ -83,9 +94,14 @@ test('(utils) diff :: throws sequence error', () => {
 	assert.ok(caught);
 });
 
+diff.run();
+
+// ---
+
+const pluck = suite('$.pluck');
 
 // Note: Arrays are received in reverse
-test('(utils) pluck', () => {
+pluck('(utils) pluck', () => {
 	// should return everything, in sync
 	const foobar = ['003', '002', '001'];
 
@@ -101,9 +117,8 @@ test('(utils) pluck', () => {
 	assert.equal(names, foobar);
 });
 
-
 // Note: Arrays are received in reverse
-test('(utils) pluck :: locals >> exists', () => {
+pluck('locals >> exists', () => {
 	// should NOT return items that don't exist yet
 	const exists = ['003', '002', '001'].map(name => ({ name }));
 	const locals = ['005', '004', '003', '002', '001'].map(name => ({ name }));
@@ -117,9 +132,8 @@ test('(utils) pluck :: locals >> exists', () => {
 	assert.equal(names, ['003', '002', '001']);
 });
 
-
 // Note: Arrays are received in reverse
-test('(utils) pluck :: exists >> locals :: throws', () => {
+pluck('exists >> locals :: throws', () => {
 	let caught = false;
 
 	try {
@@ -139,29 +153,37 @@ test('(utils) pluck :: exists >> locals :: throws', () => {
 	assert.ok(caught);
 });
 
+pluck.run();
 
-test('(utils) exists :: success', () => {
+// ---
+
+const exists = suite('$.exists');
+
+exists('success', () => {
 	const output = $.exists('uvu');
 	assert.type(output, 'string', 'returns string (success)');
 	assert.is(output, require.resolve('uvu'))
 });
 
-
-test('(utils) exists :: failure', () => {
+exists('failure', () => {
 	const output = $.exists('foobar');
 	assert.type(output, 'boolean', 'returns boolean (fail)');
 	assert.is(output, false)
 });
 
-
-test('(utils) exists :: failure :: relative', () => {
+exists('failure :: relative', () => {
 	const output = $.exists('./foobar');
 	assert.type(output, 'boolean', 'returns boolean (fail)');
 	assert.is(output, false)
 });
 
+exists.run();
 
-test('(utils) detect', () => {
+// ---
+
+const detect = suite('$.detect');
+
+detect('usage', () => {
 	const ORDER = ['postgres', 'pg', 'mysql', 'mysql2', 'better-sqlite3'];
 
 	const seen = [];
@@ -184,34 +206,100 @@ test('(utils) detect', () => {
 	$.exists = prev;
 });
 
+detect.run();
 
-test('(utils) local :: success', async () => {
-	const output = await $.local('index.js'); // root/index.js
+// ---
+
+const load = suite('$.load');
+
+load('success', async () => {
+	const input = resolve('.', 'index.js'); // root/index.js
+	const output = await $.load(input);
 	assert.type(output, 'object', '~> returns _something_ if exists');
 	assert.type(output.down, 'function', '~> had "down" export');
 	assert.type(output.up, 'function', '~> had "up" export')
 });
 
-
-test('(utils) local :: success w/ cwd', async () => {
-	const output = await $.local('util.js', __dirname); // this file
+load('success w/ cwd', async () => {
+	const input = resolve(__dirname, 'util.js'); // this file
+	const output = await $.load(input);
 	assert.type(output, 'object', '~> returns _something_ if exists')
 });
 
+load('failure', async () => {
+	const foobar = resolve('.', 'foobar.ts'); // root dir
 
-test('(utils) local :: failure', async () => {
-	const output = await $.local('foobar.ts'); // root dir
-	assert.is(output, false, '~> returns `false` if not found')
+	try {
+		await $.load(foobar);
+		assert.unreachable();
+	} catch (err) {
+		assert.instance(err, Error);
+		assert.is(err.code, 'ERR_MODULE_NOT_FOUND');
+		assert.match(err.message, foobar);
+	}
 });
 
+load.run();
 
-test('(utils) local :: failure w/ cwd', async () => {
-	const output = await $.local('index.js', dir); // => pg/migrations/index.js
-	assert.is(output, false, '~> returns `false` if not found')
+// ---
+
+const toConfig = suite('$.toConfig');
+
+toConfig('direct :: CommonJS', async () => {
+	const postgres = join(fixtures, 'postgres');
+	const output = await $.toConfig('ley.config.js', postgres);
+
+	assert.type(output, 'object');
+
+	// when 12+ `module.exports=` ~> has `default` key
+	assert.is('default' in output, hasImports);
+
+	const contents = hasImports ? output.default : output;
+	assert.type(contents, 'object');
+	assert.is(contents.database, 'ley_testing');
 });
 
+if (hasImports) {
+	// gave ".mjs" -> no fuzzy matching
+	toConfig('direct :: ES Module', async () => {
+		const postgres = join(fixtures, 'postgres.esm');
+		const output = await $.toConfig('ley.config.mjs', postgres);
 
-test('(utils) MigrationError', () => {
+		assert.type(output, 'object');
+		// `export default ` ~> has `default` key
+		assert.is('default' in output, true);
+
+		const contents = output.default;
+		assert.is(contents.database, 'ley_testing');
+	});
+
+	// gave ".js" -> look for ".mjs" too
+	toConfig('loose :: ES Module', async () => {
+		const postgres = join(fixtures, 'postgres.esm');
+		const output = await $.toConfig('ley.config.js', postgres);
+
+		assert.type(output, 'object');
+		// `export default ` ~> has `default` key
+		assert.is('default' in output, true);
+
+		const contents = output.default;
+		assert.is(contents.database, 'ley_testing');
+	});
+}
+
+// gave ".cjs" -> does not exist; no fuzzy
+toConfig('direct :: failure', async () => {
+	const output = await $.toConfig('foobar.cjs', fixtures);
+	assert.is(output, undefined);
+});
+
+toConfig.run();
+
+// ---
+
+const MigrationError = suite('$.MigrationError');
+
+MigrationError('MigrationError', () => {
 	const original = new Error('hello world');
 	const migration = { name: '000.js', abs: 'path/to/000.js' };
 	Object.assign(original, { code: 42703, position: 8, foobar: undefined });
@@ -231,7 +319,13 @@ test('(utils) MigrationError', () => {
 	assert.equal(error.migration, migration, 'attaches custom "migration" key w/ file data');
 });
 
-test('(utils) isDriver :: connect', () => {
+MigrationError.run();
+
+// ---
+
+const isDriver = suite('$.isDriver');
+
+isDriver('connect', () => {
 	assert.throws(
 		() => $.isDriver({}),
 		'Driver must have "connect" function'
@@ -243,7 +337,7 @@ test('(utils) isDriver :: connect', () => {
 	);
 });
 
-test('(utils) isDriver :: setup', () => {
+isDriver('setup', () => {
 	let noop = () => {};
 
 	assert.throws(
@@ -257,7 +351,7 @@ test('(utils) isDriver :: setup', () => {
 	);
 });
 
-test('(utils) isDriver :: loop', () => {
+isDriver('loop', () => {
 	let noop = () => {};
 
 	assert.throws(
@@ -271,7 +365,7 @@ test('(utils) isDriver :: loop', () => {
 	);
 });
 
-test('(utils) isDriver :: end', () => {
+isDriver('end', () => {
 	let noop = () => {};
 
 	assert.throws(
@@ -285,4 +379,4 @@ test('(utils) isDriver :: end', () => {
 	);
 });
 
-test.run();
+isDriver.run();

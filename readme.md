@@ -193,15 +193,15 @@ As of `ley@0.7.0` and Node.js 12+, you may choose to use [ECMAScript modules (ES
 
 1. Define [`"type": "module"`](https://nodejs.org/api/packages.html#packages_type) in your root `package.json` file. <br>This signals the Node.js runtime that _all_ `*.js` files in the project should be treated as ES modules. With this setting, you may only use CommonJS format within `.cjs` files.
 
-  ```js
-  // package.json
-  {
-    "type": "module",
-    "scripts": {
-      "migrate": "ley"
-    }
-  }
-  ```
+      ```js
+      // package.json
+      {
+        "type": "module",
+        "scripts": {
+          "migrate": "ley"
+        }
+      }
+      ```
 
 2. Author ES modules _only_ in `.mjs` files. <br>Regardless of the value of the `"type"` field (above), `.mjs` files are always treated as ES modules and `.cjs` files are always treated as CommonJS.
 
@@ -209,8 +209,7 @@ In terms of `ley` usage, this means that your [config file](#config) may use ESM
 
 ```js
 // ley.config.mjs
-// or w/ "type": "module"
-//   ~> ley.config.js
+// or w/ "type": "module" ~> ley.config.js
 export default {
 	host: 'localhost',
 	port: 5432,
@@ -222,8 +221,7 @@ Finally, migration files may also be written using ESM syntax:
 
 ```js
 // migrations/000-example.mjs
-// or w/ "type": "module"
-//   ~> migrations/000-example.js
+// or w/ "type": "module" ~> migrations/000-example.js
 export async function up(DB) {
   // with `pg` :: DB === pg.Client
   await DB.query(`select * from users`);

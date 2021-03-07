@@ -8,7 +8,7 @@ const ley = require('.');
 function wrap(act) {
 	const done = $.done.bind($, act);
 	return async (opts, tmp) => {
-		if (tmp = local(opts.config, opts.cwd)) {
+		if (tmp = await local(opts.config, opts.cwd)) {
 			$.info('Loading configuration');
 			opts.config = await (typeof tmp === 'function' ? tmp() : tmp);
 		}

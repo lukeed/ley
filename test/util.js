@@ -185,28 +185,28 @@ test('(utils) detect', () => {
 });
 
 
-test('(utils) local :: success', () => {
-	const output = $.local('index.js'); // root/index.js
+test('(utils) local :: success', async () => {
+	const output = await $.local('index.js'); // root/index.js
 	assert.type(output, 'object', '~> returns _something_ if exists');
 	assert.type(output.down, 'function', '~> had "down" export');
 	assert.type(output.up, 'function', '~> had "up" export')
 });
 
 
-test('(utils) local :: success w/ cwd', () => {
-	const output = $.local('util.js', __dirname); // this file
+test('(utils) local :: success w/ cwd', async () => {
+	const output = await $.local('util.js', __dirname); // this file
 	assert.type(output, 'object', '~> returns _something_ if exists')
 });
 
 
-test('(utils) local :: failure', () => {
-	const output = $.local('foobar.ts'); // root dir
+test('(utils) local :: failure', async () => {
+	const output = await $.local('foobar.ts'); // root dir
 	assert.is(output, false, '~> returns `false` if not found')
 });
 
 
-test('(utils) local :: failure w/ cwd', () => {
-	const output = $.local('index.js', dir); // => pg/migrations/index.js
+test('(utils) local :: failure w/ cwd', async () => {
+	const output = await $.local('index.js', dir); // => pg/migrations/index.js
 	assert.is(output, false, '~> returns `false` if not found')
 });
 

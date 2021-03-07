@@ -234,7 +234,7 @@ load('failure', async () => {
 		assert.unreachable();
 	} catch (err) {
 		assert.instance(err, Error);
-		assert.is(err.code, hasImports ? 'ERR_MODULE_NOT_FOUND' : 'MODULE_NOT_FOUND');
+		assert.is(err.code, 'MODULE_NOT_FOUND');
 		assert.match(err.message, foobar);
 	}
 });
@@ -249,14 +249,9 @@ toConfig('direct :: CommonJS', async () => {
 	const postgres = join(fixtures, 'postgres');
 	const output = await $.toConfig('ley.config.js', postgres);
 
+	// NOTE: interop handled
 	assert.type(output, 'object');
-
-	// when 12+ `module.exports=` ~> has `default` key
-	assert.is('default' in output, hasImports);
-
-	const contents = hasImports ? output.default : output;
-	assert.type(contents, 'object');
-	assert.is(contents.database, 'ley_testing');
+	assert.is(output.database, 'ley_testing');
 });
 
 if (hasImports) {
@@ -265,12 +260,9 @@ if (hasImports) {
 		const postgres = join(fixtures, 'postgres.esm');
 		const output = await $.toConfig('ley.config.mjs', postgres);
 
+		// NOTE: interop handled
 		assert.type(output, 'object');
-		// `export default ` ~> has `default` key
-		assert.is('default' in output, true);
-
-		const contents = output.default;
-		assert.is(contents.database, 'ley_testing');
+		assert.is(output.database, 'ley_testing');
 	});
 
 	// gave ".js" -> look for ".mjs" too
@@ -278,12 +270,9 @@ if (hasImports) {
 		const postgres = join(fixtures, 'postgres.esm');
 		const output = await $.toConfig('ley.config.js', postgres);
 
+		// NOTE: interop handled
 		assert.type(output, 'object');
-		// `export default ` ~> has `default` key
-		assert.is('default' in output, true);
-
-		const contents = output.default;
-		assert.is(contents.database, 'ley_testing');
+		assert.is(output.database, 'ley_testing');
 	});
 }
 

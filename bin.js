@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 const sade = require('sade');
-const pkg = require('./package');
-const { local } = require('./lib/util');
+const pkg = require('./package.json');
+const { toConfig } = require('./lib/util');
 const $ = require('./lib/log');
 const ley = require('.');
 
 function wrap(act) {
 	const done = $.done.bind($, act);
 	return async (opts, tmp) => {
-		if (tmp = await local(opts.config, opts.cwd)) {
+		if (tmp = await toConfig(opts.config, opts.cwd)) {
 			$.info('Loading configuration');
-			opts.config = await (typeof tmp === 'function' ? tmp() : tmp);
+			tmp = await (typeof tmp === 'function' ? tmp() : tmp);
+			opts.config = tmp.default || tmp;
 		}
 		await ley[act](opts).then(done).catch($.bail);
 	};

@@ -107,8 +107,8 @@ exports.new = async function (opts={}) {
 	let file = join(dir, filename);
 
 	await mkdir(dir).then(() => {
-		let str = 'exports.up = async client => {\n\t// <insert magic here>\n};\n\n';
-		str += 'exports.down = async client => {\n\t// just in case...\n};\n';
+		let str = 'exports.up = async client => {\n\n};\n\n';
+		str += 'exports.down = async client => {\n\n};\n';
 		writeFileSync(file, str);
 	});
 

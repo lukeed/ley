@@ -1,6 +1,6 @@
 {
   "name": "ley",
-  "version": "0.6.0",
+  "version": "0.7.1",
   "repository": "lukeed/ley",
   "description": "Driver-agnostic database migrations",
   "types": "ley.d.ts",
@@ -31,6 +31,7 @@
     "totalist": "^2.0.0"
   },
   "devDependencies": {
-    "uvu": "0.3.3"
+    "semiver": "1.1.0",
+    "uvu": "0.5.1"
   }
 }

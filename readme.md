@@ -185,6 +185,62 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = options;
 ```
 
+When the config filename uses the `.js` extension, then `ley` will attempt to auto-load a `.mjs` or a `.cjs` variant of the file if/when the original `.js` file was not found. This means that, by default, these files are searched (in order):
+
+* `ley.config.js`
+* `ley.config.mjs`
+* `ley.config.cjs`
+
+## ES Modules
+
+As of `ley@0.7.0` and Node.js 12+, you may choose to use [ECMAScript modules (ESM)](https://nodejs.org/api/esm.html). There are a few ways to take advantage of this:
+
+> **Note:** These are _separate_ options. You **do not** need to perform both items
+
+1. Define [`"type": "module"`](https://nodejs.org/api/packages.html#packages_type) in your root `package.json` file. <br>This signals the Node.js runtime that _all_ `*.js` files in the project should be treated as ES modules. With this setting, you may only use CommonJS format within `.cjs` files.
+
+      ```js
+      // package.json
+      {
+        "type": "module",
+        "scripts": {
+          "migrate": "ley"
+        }
+      }
+      ```
+
+2. Author ES modules _only_ in `.mjs` files. <br>Regardless of the value of the `"type"` field (above), `.mjs` files are always treated as ES modules and `.cjs` files are always treated as CommonJS.
+
+In terms of `ley` usage, this means that your [config file](#config) may use ESM syntax. Similarly, by default, both `ley.config.mjs` and `ley.config.cjs` will be auto-loaded, if found and `ley.config.js` is missing.
+
+```js
+// ley.config.mjs
+// or w/ "type": "module" ~> ley.config.js
+export default {
+	host: 'localhost',
+	port: 5432,
+	// ...
+}
+```
+
+Finally, migration files may also be written using ESM syntax:
+
+```js
+// migrations/000-example.mjs
+// or w/ "type": "module" ~> migrations/000-example.js
+export async function up(DB) {
+  // with `pg` :: DB === pg.Client
+  await DB.query(`select * from users`);
+
+  // with `postgres` :: DB === sql``
+  await DB`select * from users`;
+}
+
+export async function down(DB) {
+  // My pre-configured "undo" function
+}
+```
+
 ## Drivers
 
 Out of the box, `ley` includes drivers for the following npm packages:
@@ -228,7 +284,7 @@ For extra confidence while writing your migration file(s), there are two options
      }
    }
    ```
-   
+
 3. Run `ley` with the [`require`](#optsrequire) option so that `ts-node` can process file(s)
 
    ```sh

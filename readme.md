@@ -279,7 +279,20 @@ For extra confidence while writing your migration file(s), there are two options
      "ts-node": {
        "transpileOnly": true,
        "compilerOptions": {
-         "module": "commonjs"
+         "module": "CommonJS"
+       }
+     }
+   }
+   ```
+
+   If you are using ESM via `"type": "module"` in your `package.json`, then you will need to instead configure `ts-node` via `moduleTypes`:
+
+   ```json
+   {
+     "ts-node": {
+       "transpileOnly": true,
+       "moduleTypes": {
+         "migrations/*": "cjs"
        }
      }
    }

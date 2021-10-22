@@ -270,27 +270,14 @@ For extra confidence while writing your migration file(s), there are two options
 
 ### TypeScript
 
-1. Ensure [`ts-node`](https://www.npmjs.com/package/ts-node) is installed
+1. Ensure [`tsm`](https://www.npmjs.com/package/tsm) is installed
 
-2. Define a `ts-node` configuration block inside your `tsconfig.json` file:
-
-   ```json
-   {
-     "ts-node": {
-       "transpileOnly": true,
-       "compilerOptions": {
-         "module": "commonjs"
-       }
-     }
-   }
-   ```
-
-3. Run `ley` with the [`require`](#optsrequire) option so that `ts-node` can process file(s)
+2. Run `ley` with the [`require`](#optsrequire) option so that `tsm` can process file(s)
 
    ```sh
-   $ ley -r ts-node/register <cmd>
+   $ ley -r tsm <cmd>
    # or
-   $ ley --require ts-node/register <cmd>
+   $ ley --require tsm <cmd>
    ```
 
 ### JSDoc

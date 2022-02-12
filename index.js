@@ -102,15 +102,21 @@ exports.new = async function (opts={}) {
 	}
 
 	let filename = prefix + '-' + opts.filename.replace(/\s+/g, '-');
-	if (!/\.\w+$/.test(filename)) filename += '.js';
+	if (!/\.\w+$/.test(filename)) filename += opts.mjs ? '.mjs' : '.js';
 	let dir = resolve(opts.cwd || '.', opts.dir);
 	let file = join(dir, filename);
 
-	await mkdir(dir).then(() => {
-		let str = 'exports.up = async client => {\n\t// <insert magic here>\n};\n\n';
-		str += 'exports.down = async client => {\n\t// just in case...\n};\n';
-		writeFileSync(file, str);
-	});
+	await mkdir(dir);
+	
+	let str = '';
+	if (opts.mjs) {
+		str += 'export async function up (client) {\n\n};\n\n';
+		str += 'export async function down (client) {\n\n};\n\n';
+	} else {
+		str += 'exports.up = async client => {\n\n};\n\n';
+		str += 'exports.down = async client => {\n\n};\n';
+	}
+	writeFileSync(file, str);
 
 	return filename;
 }

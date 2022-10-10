@@ -106,9 +106,9 @@ exports.new = async function (opts={}) {
 	let dir = resolve(opts.cwd || '.', opts.dir);
 	let file = join(dir, filename);
 
+	let str = '';
 	await mkdir(dir);
 	
-	let str = '';
 	if (opts.mjs) {
 		str += 'export async function up(client) {\n\n};\n\n';
 		str += 'export async function down(client) {\n\n};\n';

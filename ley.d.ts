@@ -22,6 +22,7 @@ declare namespace Options {
 		filename: string;
 		timestamp?: boolean;
 		length?: number;
+		esm?: boolean;
 	}
 }
 

@@ -110,8 +110,8 @@ exports.new = async function (opts={}) {
 	await mkdir(dir);
 	
 	if (opts.mjs) {
-		str += 'export async function up(client) {\n\n};\n\n';
-		str += 'export async function down(client) {\n\n};\n';
+		str += 'export async function up(client) {\n\n}\n\n';
+		str += 'export async function down(client) {\n\n}\n';
 	} else {
 		str += 'exports.up = async client => {\n\n};\n\n';
 		str += 'exports.down = async client => {\n\n};\n';

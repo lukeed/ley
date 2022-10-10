@@ -241,6 +241,20 @@ export async function down(DB) {
 }
 ```
 
+You may generate new migration files in ESM syntax by passing the `--esm` flag to the `ley new` command:
+
+```sh
+$ ley new todos --esm
+#=> migrations/003-todos.mjs
+
+$ cat migrations/003-todos.mjs
+#=> export async function up(client) {
+#=> }
+#=> 
+#=> export async function down(client) {
+#=> }
+```
+
 ## Drivers
 
 Out of the box, `ley` includes drivers for the following npm packages:
@@ -339,7 +353,15 @@ Type: `string`
 
 **Required.** The name of the file to be created.
 
-> **Note:** A prefix will be prepended based on [`opts.timestamp`](#optstimestamp) and [`opts.length`](#optslength) values.<br>The `.js` extension will be applied unless your input already has an extension.
+> **Note:** A prefix will be prepended based on [`opts.timestamp`](#optstimestamp) and [`opts.length`](#optslength) values.<br>If your input does not already end with an extension, then `.js` or `.mjs` will be appended.
+
+#### opts.esm
+Type: `boolean`<br>
+Default: `false`
+
+Create a migration file with ESM syntax.
+
+> **Note:** When true, the `opts.filename` will contain the `.mjs` file extension unless your input already has an extension.
 
 #### opts.timestamp
 Type: `boolean`<br>

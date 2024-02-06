@@ -294,7 +294,7 @@ For extra confidence while writing your migration file(s), there are two options
    $ ley --require tsm <cmd>
    ```
 
-Alternative: [`tsx`](https://www.npmjs.com/package/tsx) with `ley --require tsx/cjs <cmd>`
+Alternative: [`tsx`](https://www.npmjs.com/package/tsx) with `NODE_OPTIONS='--import tsx' ley <cmd>`
 
 ### JSDoc
 

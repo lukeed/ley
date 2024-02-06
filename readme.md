@@ -241,13 +241,23 @@ export async function down(DB) {
 }
 ```
 
-You may generate new migration files in ESM syntax by passing the `--esm` flag to the `ley new` command:
+You may generate new migration files in ESM or TypeScript syntax by passing the `--esm` or `--ts` flag to the `ley new` command:
 
 ```sh
 $ ley new todos --esm
 #=> migrations/003-todos.mjs
 
 $ cat migrations/003-todos.mjs
+#=> export async function up(client) {
+#=> }
+#=> 
+#=> export async function down(client) {
+#=> }
+
+$ ley new todos --ts
+#=> migrations/004-todos.ts
+
+$ cat migrations/004-todos.ts
 #=> export async function up(client) {
 #=> }
 #=> 

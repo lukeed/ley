@@ -102,14 +102,14 @@ exports.new = async function (opts={}) {
 	}
 
 	let filename = prefix + '-' + opts.filename.replace(/\s+/g, '-');
-	if (!/\.\w+$/.test(filename)) filename += opts.esm ? '.mjs' : '.js';
+	if (!/\.\w+$/.test(filename)) filename += opts.ts ? '.ts' : opts.esm ? '.mjs' : '.js';
 	let dir = resolve(opts.cwd || '.', opts.dir);
 	let file = join(dir, filename);
 
 	let str = '';
 	await mkdir(dir);
 	
-	if (opts.esm) {
+	if (opts.ts || opts.esm) {
 		str += 'export async function up(client) {\n\n}\n\n';
 		str += 'export async function down(client) {\n\n}\n';
 	} else {

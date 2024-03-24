@@ -26,6 +26,7 @@
   - [x] [`mysql`](https://www.npmjs.com/package/mysql)
   - [x] [`mysql2`](https://www.npmjs.com/package/mysql2)
   - [x] [`better-sqlite3`](https://www.npmjs.com/package/better-sqlite3)
+  - [x] [`libsql`](https://www.npmjs.com/package/@libsql/client)
   - [ ] [`sqlite`](https://www.npmjs.com/package/sqlite)
 - [ ] complete test coverage
 - [ ] complete documentation
@@ -33,7 +34,7 @@
 ## Features
 
 * **Agnostic**<br>
-  _Supports [`postgres`](https://www.npmjs.com/package/postgres), [`pg`](https://www.npmjs.com/package/pg), [`better-sqlite3`](https://www.npmjs.com/package/better-sqlite3), [`sqlite`](https://www.npmjs.com/package/sqlite), [`mysql`](https://www.npmjs.com/package/mysql), [`mysql2`](https://www.npmjs.com/package/mysql2), and [custom drivers!](#drivers)_
+  _Supports [`postgres`](https://www.npmjs.com/package/postgres), [`pg`](https://www.npmjs.com/package/pg), [`better-sqlite3`](https://www.npmjs.com/package/better-sqlite3), [`libsql`](https://www.npmjs.com/package/@libsql/client), [`sqlite`](https://www.npmjs.com/package/sqlite), [`mysql`](https://www.npmjs.com/package/mysql), [`mysql2`](https://www.npmjs.com/package/mysql2), and [custom drivers!](#drivers)_
 
 * **Lightweight**<br>
   _Does **not** include any driver dependencies._
